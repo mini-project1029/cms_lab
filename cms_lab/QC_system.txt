@@ -1,0 +1,30 @@
+        GENERATE    20             ; Products arrive every 20 minutes (mean)
+        QUEUE       QCQueue        ; Enter the quality control queue
+
+; The number of workers (servers) handling quality control is 3
+; The system will seize any available worker from the pool
+        SEIZE       Worker1        ; Capture the first worker (server)
+        SEIZE       Worker2        ; Capture the second worker (server)
+        SEIZE       Worker3        ; Capture the third worker (server)
+
+        DEPART      QCQueue        ; Leave the queue after being inspected
+        ADVANCE     12             ; Quality check time of 12 minutes (mean)
+        RELEASE     Worker1        ; Free the first worker (server)
+        RELEASE     Worker2        ; Free the second worker (server)
+        RELEASE     Worker3        ; Free the third worker (server)
+        TERMINATE                   ; Product leaves after inspection
+
+; Restocking Process (Restock products to inspect)
+        GENERATE    300            ; Restocking arrives every 300 minutes (5 hours)
+        SEIZE       Inventory      ; Seize inventory space
+        ADVANCE     0              ; Restocking time is immediate (no delay)
+        RELEASE     Inventory      ; Release restocked inventory
+        TERMINATE                   ; End restocking transaction
+
+; Timer (Stop simulation after 480 minutes)
+        GENERATE    480            ; Timer arrives after 480 minutes (8 hours)
+        TERMINATE   1              ; End the simulation after 480 minutes
+
+; Control (Start the simulation)
+        START       1              ; Start the simulation run
+	END

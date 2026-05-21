@@ -1,0 +1,47 @@
+GENERATE    15             ; Clothes arrive every 15 minutes (mean)
+        QUEUE       WashQueue      ; Enter the washing queue
+
+; The number of washing machines (servers) available is 3
+        SEIZE       Washer1        ; Capture the first washer
+        SEIZE       Washer2        ; Capture the second washer
+        SEIZE       Washer3        ; Capture the third washer
+
+        DEPART      WashQueue      ; Leave the washing queue
+        ADVANCE     15             ; Washing time of 15 minutes (mean)
+        RELEASE     Washer1        ; Free the first washer
+        RELEASE     Washer2        ; Free the second washer
+        RELEASE     Washer3        ; Free the third washer
+
+; Rinsing stage
+        QUEUE       RinseQueue     ; Enter the rinsing queue
+        SEIZE       Washer1        ; Reuse the first washer
+        SEIZE       Washer2        ; Reuse the second washer
+        SEIZE       Washer3        ; Reuse the third washer
+
+        DEPART      RinseQueue     ; Leave the rinsing queue
+        ADVANCE     10             ; Rinsing time of 10 minutes
+        RELEASE     Washer1        ; Release washer after rinsing
+        RELEASE     Washer2
+        RELEASE     Washer3
+
+; Spinning stage
+        QUEUE       SpinQueue      ; Enter the spinning queue
+        SEIZE       Washer1        ; Seize washer again for spinning
+        SEIZE       Washer2
+        SEIZE       Washer3
+
+        DEPART      SpinQueue      ; Leave the spinning queue
+        ADVANCE     5              ; Spinning time of 5 minutes
+        RELEASE     Washer1
+        RELEASE     Washer2
+        RELEASE     Washer3
+
+        TERMINATE                  ; Clothes exit the system after processing
+
+; Timer (Stop simulation after 480 minutes)
+        GENERATE    480            ; Stop simulation trigger after 8 hours
+        TERMINATE   1              ; End simulation run
+
+; Control (Start the simulation)
+        START       1              ; Start the simulation run
+	END

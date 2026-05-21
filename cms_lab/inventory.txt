@@ -1,0 +1,31 @@
+; Customer (Inventory demand)
+        GENERATE    18,6            ; Customers arrive every 18 +/- 6 minutes
+        QUEUE       Line            ; Enter the line (queue)
+
+; The number of workers (servers) handling the inventory is 3
+; The system will seize any available worker from the pool
+        SEIZE       Worker1         ; Capture the first worker (server)
+        SEIZE       Worker2         ; Capture the second worker (server)
+        SEIZE       Worker3         ; Capture the third worker (server)
+
+        DEPART      Line            ; Leave the line after being served
+        ADVANCE     16,4            ; Use the worker (service time) 16 +/- 4 minutes
+        RELEASE     Worker1         ; Free the first worker (server)
+        RELEASE     Worker2         ; Free the second worker (server)
+        RELEASE     Worker3         ; Free the third worker (server)
+        TERMINATE                   ; Customer leaves after service
+
+; Restocking Process (Supply)
+        GENERATE    240             ; Restocking arrives every 240 minutes (4 hours)
+        SEIZE       Inventory       ; Seize inventory space
+        ADVANCE     0,0             ; Restocking time is immediate (no delay)
+        RELEASE     Inventory       ; Release restocked inventory
+        TERMINATE                   ; End restocking transaction
+
+; Timer (Stop simulation after 480 minutes)
+        GENERATE    480             ; Timer arrives after 480 minutes (8 hours)
+        TERMINATE   1               ; End the simulation after 480 minutes
+
+; Control (Start the simulation)
+        START       1               ; Start the simulation run
+	END

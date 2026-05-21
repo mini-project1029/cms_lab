@@ -1,0 +1,45 @@
+; ------------ Passenger Arrival ------------
+        GENERATE    5            ; Passenger arrives every 5 minutes
+        QUEUE       CheckInQ
+        SEIZE       CheckIn
+        DEPART      CheckInQ
+        ADVANCE     4
+        RELEASE     CheckIn
+
+; ------------ Security Check ------------
+        QUEUE       SecurityQ
+        SEIZE       Security
+        DEPART      SecurityQ
+        ADVANCE     3
+        RELEASE     Security
+
+; ------------ Boarding Gate ------------
+        ADVANCE     2; ------------ Customer Arrival ------------
+        GENERATE    6            ; A customer arrives every 6 minutes
+        QUEUE       BillingQ     ; Join billing queue
+        SEIZE       Billing      ; Seize a billing counter
+        DEPART      BillingQ     ; Leave the billing queue
+        ADVANCE     5            ; Takes 5 minutes to bill items
+        RELEASE     Billing      ; Release the billing counter
+
+; ------------ Exit the System ------------
+        ADVANCE     2            ; Takes 2 minutes to leave the store
+        TERMINATE                ; Customer exits
+
+
+; ------------ Simulation Timer ------------
+        GENERATE    480          ; Control transaction to end after 8 hours
+        TERMINATE   1
+
+; ------------ Start Simulation ------------
+        START       1
+	END
+        TERMINATE
+
+; ------------ Simulation Timer ------------
+        GENERATE    480          ; Stop after 480 minutes
+        TERMINATE   1
+
+; ------------ Start Simulation ------------
+        START       1
+        END

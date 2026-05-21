@@ -1,0 +1,26 @@
+; ------------ Passenger Arrival ------------
+        GENERATE    5            ; Passenger arrives every 5 minutes
+        QUEUE       CheckInQ
+        SEIZE       CheckIn
+        DEPART      CheckInQ
+        ADVANCE     4
+        RELEASE     CheckIn
+
+; ------------ Security Check ------------
+        QUEUE       SecurityQ
+        SEIZE       Security
+        DEPART      SecurityQ
+        ADVANCE     3
+        RELEASE     Security
+
+; ------------ Boarding Gate ------------
+        ADVANCE     2
+        TERMINATE
+
+; ------------ Simulation Timer ------------
+        GENERATE    480          ; Stop after 480 minutes
+        TERMINATE   1
+
+; ------------ Start Simulation ------------
+        START       1
+        END
